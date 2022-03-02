@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/layout.css' %}">
+    <style>
+
+    </style>
+</head>
+<body>
+    <header>
+        {% if request.session.sessionid == None %}
+            <span><a href="/login">LOGIN</a></span>
+            <span><a href="/register">REGISTER</a></span>
+        {% else %}
+            <span>{{request.session.sessionid}}</span>
+            <span><a href="/logout">LOGOUT</a></span>
+        {% endif %}
+        <h1><a href="/"> HTML5 & CSS</a></h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="/guest/a">guest</a></li>
+            <li><a href="/guest/iv">add guest</a></li>
+            <li><a href="/article/a">article</a></li>
+            <li><a href="/article/iv">add article</a></li>
+            <li><a href="/item/a">Item</a></li>
+            <li><a href="/item/iv">add Item</a></li>
+            <li><a href="/cart/a">Cart</a></li>
+
+        </ul>
+    </nav>
+    {% if center != None %}
+        {% include center %}
+    {% else %}
+        <section></section>
+    {% endif %}
+    <footer></footer>
+</body>
+</html>
