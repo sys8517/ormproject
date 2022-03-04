@@ -1,5 +1,7 @@
+import json
 import logging
 
+from django.http import HttpResponse
 from django.shortcuts import render
 from django.views import View
 from django_request_mapping import request_mapping
@@ -14,6 +16,51 @@ class MyView(View):
     def home(self,request):
         return render(request,'home.html');
 
+    @request_mapping("/ajax", method="get")
+    def ajax(self, request):
+        context = {
+            'center': 'ajax.html'
+        };
+        return render(request, 'home.html', context);
+
+    @request_mapping("/ajaximpl", method="get")
+    def ajaximpl(self, request):
+        # [{}, {}, {}]
+        data = [];
+        for i in range(1, 10):
+            dic ={};
+            dic['id'] = 'id'+str(i);
+            dic['name'] = 'james'+str(i);
+            dic['age'] = i;
+            data.append(dic)
+        return HttpResponse(json.dumps(data), content_type='application/json');
+
+    @request_mapping("/geoimpl", method="get")
+    def geoimpl(self, request):
+        # [{}, {}, {}]
+        positions = [];
+        dic1 ={'content':'<div>카카오</div><img class="p1" src="/static/img/p1.jpg">',
+               'lat':'35.17217744069076',
+               'lng':'129.01244045540988',
+               'target':'http://www.naver.com'};
+        dic2 ={'content':'<div>생태연못</div>',
+               'lat':'35.17737744069056',
+               'lng':'129.01344045540988',
+               'target':'http://www.google.com'};
+        dic3 ={'content':'<div>텃밭</div>',
+               'lat':'35.17517744069056',
+               'lng':'129.01444045540988',
+               'target':'http://www.daum.net'};
+        dic4 ={'content':'<div>근린공원</div>',
+               'lat':'35.17217744069056',
+               'lng':'129.01444045540988',
+               'target':'http://www.msn.com'};
+        positions.append(dic1)
+        positions.append(dic2)
+        positions.append(dic3)
+        positions.append(dic4)
+        return HttpResponse(json.dumps(positions), content_type='application/json');
+
     @request_mapping("/iot", method="get")
     def iot(self, request):
         id = request.GET['id'];
@@ -25,6 +72,8 @@ class MyView(View):
         #---------------------------------
 
         return render(request, 'ok.html');
+
+
 
 
     @request_mapping("/login", method="get")
@@ -100,4 +149,18 @@ class MyView(View):
             context['center'] = 'registerok.html'
             context['rname'] = name;
 
+        return render(request,'home.html', context);
+
+    @request_mapping("/geo", method="get")
+    def geo(self,request):
+        context = {
+            'center':'geo.html'
+        };
+        return render(request,'home.html', context);
+
+    @request_mapping("/geo2", method="get")
+    def geo2(self,request):
+        context = {
+            'center':'geo2.html'
+        };
         return render(request,'home.html', context);
